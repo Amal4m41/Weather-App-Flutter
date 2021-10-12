@@ -1,4 +1,3 @@
-import 'dart:html';
 import 'dart:io';
 
 void main() {
@@ -7,8 +6,8 @@ void main() {
 
 void performTasks() async {
   task1();
-  task2();
-  task3();
+  String result = await task2();
+  task3(result);
 }
 
 void task1() {
@@ -16,15 +15,22 @@ void task1() {
   print('Task 1 complete');
 }
 
-void task2() {
+Future<String> task2() async {
+  print("before delayed");
   Duration threeSeconds = Duration(seconds: 3);
-  sleep(threeSeconds);
-  String result;
-  result = 'task 2 data';
-  print('Task 2 complete');
+
+  String result = 'dummy';
+  // //will be executed at any time... cuz its asynchronous
+  await Future.delayed(threeSeconds, () {
+    result = 'task 2 data';
+    print('Task 2 complete');
+  });
+
+  print("outside delayed");
+  return result;
 }
 
-void task3() {
+void task3(String task2Data) {
   String result = 'task 3 data';
-  print('Task 3 complete');
+  print('Task 3 complete $task2Data');
 }
