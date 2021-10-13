@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/services/networking.dart';
 import 'package:weather_app/utils/constants.dart';
 import 'package:weather_app/services/location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'location_screen.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -12,37 +15,41 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  late Location loc;
+  late double lat;
+  late double lng;
 
   Future<void> getLocation() async {
-    loc = Location();
+    Location loc = Location();
 
     await loc.getCurrentLocation();
-    print(loc.lat);
-    print(loc.lng);
+
+    lat = loc.getLatitude();
+    lng = loc.getLongitude();
+    print(lat);
+    print(lng);
+
+    getWeatherData();
   }
 
   void getWeatherData() async {
-    http.Response response = await http.get(Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?lat=${loc.lat}&lon=${loc.lng}&appid=$apiKey'));
+    NetworkHelper networkHelper = NetworkHelper(
+        url:
+            'https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=$apiKey');
 
-    if (response.statusCode == 200) {
-      //The json data is always converted into string for effective transmission of data.
-      String body = response.body;
+    //will get the map object if it's a successful api call, otherwise null
+    var weatherData = await networkHelper.getData();
 
-      //Parses the string and returns the resulting Json object
-      // print(jsonDecode(body)["weather"][0]["description"]); //weather[0].description
-      print(jsonDecode(body)["main"]["temp"]);
-    } else {
-      print(response.statusCode);
-    }
-  }
-
-  void getLocAndWeather() async {
-    print("BEFORE");
-    await getLocation(); //wait for the location data to be fetched.
-    print("AFTER");
-    getWeatherData();
+    // Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return LocationScreen(
+            weatherData: weatherData,
+          );
+        },
+      ),
+    );
   }
 
   /*
@@ -52,20 +59,18 @@ Override this method to perform initialization that depends on the location at w
    */
   @override
   void initState() {
-    getLocAndWeather();
-    print("AFTER LOCATION");
+    getLocation();
   }
 
   @override
   Widget build(BuildContext context) {
-    try {
-      getWeatherData();
-    } catch (e) {
-      print(e);
-    }
-
     return Scaffold(
-      body: Center(),
+      body: Center(
+        child: SpinKitThreeInOut(
+          color: Colors.white,
+          size: 60,
+        ),
+      ),
     );
   }
 
