@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:weather_app/services/networking.dart';
@@ -8,10 +9,10 @@ const String openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather";
 
 class WeatherModel {
   //Fetch the current location of the user and then get the weather for the same.
-  Future<dynamic> getCurrentLocationWeatherData() async {
+  Future<dynamic> getCurrentLocationWeatherData(BuildContext context) async {
     Location loc = Location();
 
-    await loc.getCurrentLocation();
+    await loc.getCurrentLocation(context);
 
     try {
       double lat = loc.getLatitude();

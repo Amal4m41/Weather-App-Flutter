@@ -14,7 +14,8 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   Future<void> getLocationAndWeather() async {
-    var weatherData = await WeatherModel().getCurrentLocationWeatherData();
+    var weatherData =
+        await WeatherModel().getCurrentLocationWeatherData(context);
     // Navigator.pop(context);
     Navigator.push(
       context,

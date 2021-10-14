@@ -4,6 +4,7 @@ import 'package:flutter/painting.dart';
 import 'package:weather_app/services/weather.dart';
 import 'package:weather_app/services/location.dart';
 import 'city_screen.dart';
+import 'package:geolocator/geolocator.dart';
 
 class LocationScreen extends StatefulWidget {
   final weatherData;
@@ -30,7 +31,7 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   void updateUI(dynamic weatherData) {
-    print("LocationScreen state : $weatherData");
+    print("updateUI weatherData : $weatherData");
 
     setState(() {
       if (weatherData == null) {
@@ -71,8 +72,8 @@ class _LocationScreenState extends State<LocationScreen> {
                 children: [
                   TextButton(
                     onPressed: () async {
-                      var weatherData =
-                          await weatherModel.getCurrentLocationWeatherData();
+                      var weatherData = await weatherModel
+                          .getCurrentLocationWeatherData(context);
 
                       updateUI(weatherData);
                     },
