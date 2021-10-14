@@ -10,6 +10,8 @@ class WeatherApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // precacheImage(AssetImage("images/bridge.jpg"), context);
+    // precacheImage(AssetImage("images/weatherBg.jpg"), context);
     return MaterialApp(
       theme: ThemeData.dark(),
       home: LoadingScreen(),

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/services/networking.dart';
-import 'package:weather_app/utils/constants.dart';
+
 import 'package:weather_app/services/location.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'location_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:weather_app/services/weather.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -15,30 +13,8 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  late double lat;
-  late double lng;
-
-  Future<void> getLocation() async {
-    Location loc = Location();
-
-    await loc.getCurrentLocation();
-
-    lat = loc.getLatitude();
-    lng = loc.getLongitude();
-    print(lat);
-    print(lng);
-
-    getWeatherData();
-  }
-
-  void getWeatherData() async {
-    NetworkHelper networkHelper = NetworkHelper(
-        url:
-            'https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=$apiKey');
-
-    //will get the map object if it's a successful api call, otherwise null
-    var weatherData = await networkHelper.getData();
-
+  Future<void> getLocationAndWeather() async {
+    var weatherData = await WeatherModel().getCurrentLocationWeatherData();
     // Navigator.pop(context);
     Navigator.push(
       context,
@@ -59,7 +35,7 @@ Override this method to perform initialization that depends on the location at w
    */
   @override
   void initState() {
-    getLocation();
+    getLocationAndWeather();
   }
 
   @override
