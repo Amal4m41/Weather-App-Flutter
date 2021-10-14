@@ -9,3 +9,22 @@ final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
     borderRadius: BorderRadius.all(Radius.circular(2)),
   ),
 );
+
+final kTextFieldDecoration = InputDecoration(
+  contentPadding: EdgeInsets.all(16),
+  filled: true,
+  hintText: "Enter City Name",
+  hintStyle: TextStyle(
+    color: Colors.grey,
+  ),
+  fillColor: Colors.white,
+  icon: Icon(
+    Icons.location_city,
+    color: Colors.white,
+    size: 30,
+  ),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8),
+    borderSide: BorderSide.none,
+  ),
+);

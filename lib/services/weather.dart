@@ -4,6 +4,8 @@ import 'package:weather_app/services/networking.dart';
 import 'package:weather_app/services/location.dart';
 import 'package:weather_app/utils/constants.dart';
 
+const String openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather";
+
 class WeatherModel {
   //Fetch the current location of the user and then get the weather for the same.
   Future<dynamic> getCurrentLocationWeatherData() async {
@@ -11,16 +13,30 @@ class WeatherModel {
 
     await loc.getCurrentLocation();
 
-    double lat = loc.getLatitude();
-    double lng = loc.getLongitude();
-    print(lat);
-    print(lng);
+    try {
+      double lat = loc.getLatitude();
+      double lng = loc.getLongitude();
+      print(lat);
+      print(lng);
 
+      NetworkHelper networkHelper = NetworkHelper(
+          url:
+              '$openWeatherUrl?lat=${lat}&lon=${lng}&units=metric&appid=$apiKey');
+
+      //will get the map object if it's a successful api call, otherwise null
+      var weatherData = await networkHelper.getData();
+
+      return weatherData;
+    } catch (e) {
+      print(
+          "getCurrentLocationWeatherData : $e"); //in this case null will be returned.
+    }
+  }
+
+  Future<dynamic> getCityWeatherData(String cityName) async {
     NetworkHelper networkHelper = NetworkHelper(
-        url:
-            'https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=$apiKey');
+        url: '$openWeatherUrl?q=$cityName&units=metric&appid=$apiKey');
 
-    //will get the map object if it's a successful api call, otherwise null
     var weatherData = await networkHelper.getData();
 
     return weatherData;

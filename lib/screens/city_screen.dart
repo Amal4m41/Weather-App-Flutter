@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:weather_app/utils/constants.dart';
 
 class CityScreen extends StatefulWidget {
   const CityScreen({Key? key}) : super(key: key);
@@ -11,6 +12,8 @@ class CityScreen extends StatefulWidget {
 }
 
 class _CityScreenState extends State<CityScreen> {
+  String? cityName; //default value is null
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,29 +43,21 @@ class _CityScreenState extends State<CityScreen> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
+                  //Called when the user initiates a change to the TextField's value: when they have inserted or deleted text.
+                  onChanged: (String textValue) {
+                    cityName = textValue;
+                  },
+                  // onSubmitted: (String text) {
+                  //   print(text);
+                  // },
                   style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(16),
-                    filled: true,
-                    hintText: "Enter City Name",
-                    hintStyle: TextStyle(
-                      color: Colors.grey,
-                    ),
-                    fillColor: Colors.white,
-                    icon: Icon(
-                      Icons.location_city,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
+                  decoration: kTextFieldDecoration,
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context, cityName);
+                },
                 child: Text(
                   "Get Weather",
                   style: TextStyle(
