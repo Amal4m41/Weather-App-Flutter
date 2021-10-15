@@ -28,3 +28,11 @@ final kTextFieldDecoration = InputDecoration(
     borderSide: BorderSide.none,
   ),
 );
+
+const kTextStyle = TextStyle(
+    fontSize: 50,
+    color: Colors.white,
+    fontFamily: "Lato",
+    fontWeight: FontWeight.w900);
+
+const String imagePath = "assets/images/";

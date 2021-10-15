@@ -16,7 +16,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Future<void> getLocationAndWeather() async {
     var weatherData =
         await WeatherModel().getCurrentLocationWeatherData(context);
-    // Navigator.pop(context);
+
+    //Pop the current screen and then push the next one, so that when the user clicks back to come
+    //back, he's not landed on the loading screen.
+    Navigator.pop(context);
     Navigator.push(
       context,
       MaterialPageRoute(
